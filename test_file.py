@@ -4,3 +4,5 @@ def First():
     a = 1
     b = 2
 
+def Second():
+    c = 3
