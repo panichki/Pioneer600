@@ -9,3 +9,5 @@ def Second():
     d = 4
 
 # Second branch addition
+    e = 5
+
