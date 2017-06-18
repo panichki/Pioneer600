@@ -6,4 +6,3 @@ def First():
 
 def Second():
     c = 3
-    d = 4
