@@ -80,7 +80,7 @@ while 1:
     t[5] = t[5] & 0x1F  # mouth
     print("20%x/%02x/%02x %02x:%02x:%02x %s" % (t[6], t[5], t[4], t[2], t[1], t[0], w[t[3] - 1]))
     # Write time to disp
-    timestr = format("%02x:%02x:%02x", (t[2], t[1], t[0]))
+    timestr = format("%02x:%02x:%02x", t[2], t[1], t[0])
     draw.text((x, top + 6), timestr, font=font, fill=255)
     # Display image.
     disp.image(image)
