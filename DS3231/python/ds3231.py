@@ -6,7 +6,7 @@ import time
 address = 0x68
 register = 0x00
 #sec min hour week day mout year
-NowTime = [0x00,0x15,0x22,0x04,0x21,0x09,0x16]
+NowTime = [0x00,0x12,0x16,0x03,0x28,0x06,0x17]
 w  = ["SUN","Mon","Tues","Wed","Thur","Fri","Sat"];
 #/dev/i2c-1
 bus = smbus.SMBus(1)
@@ -16,7 +16,7 @@ def ds3231SetTime():
 def ds3231ReadTime():
 	return bus.read_i2c_block_data(address,register,7);
 
-#ds3231SetTime()
+ds3231SetTime()
 while 1:
 	t = ds3231ReadTime()
 	t[0] = t[0]&0x7F  #sec
