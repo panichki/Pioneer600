@@ -14,7 +14,7 @@ import ImageFont
 RST = 19
 # Note the following are only used with SPI
 DC = 16
-bus = 0
+busSPI = 0
 device = 0
 
 # Raspberry Pi pin configuration for DS3231
@@ -22,7 +22,7 @@ address = 0x68
 register = 0x00
 # sec min hour week day mout year
 NowTime = [0x00, 0x12, 0x16, 0x03, 0x28, 0x06, 0x17]
-w = ["SUN", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
+w = ["SUN", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"]
 # /dev/i2c-1
 bus = smbus.SMBus(1)
 
@@ -36,7 +36,7 @@ def ds3231ReadTime():
 
 
 # 128x64 display with hardware SPI:
-disp = SSD1306.SSD1306(RST, DC, SPI.SpiDev(bus, device))
+disp = SSD1306.SSD1306(RST, DC, SPI.SpiDev(busSPI, device))
 
 # Initialize library.
 disp.begin()
