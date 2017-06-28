@@ -6,9 +6,9 @@ import time
 import spidev as SPI
 import SSD1306
 
-import Image
-import ImageDraw
-import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 # Raspberry Pi pin configuration for OLED
 RST = 19
@@ -22,7 +22,8 @@ address = 0x68
 register = 0x00
 # sec min hour week day mout year
 NowTime = [0x00, 0x12, 0x16, 0x03, 0x28, 0x06, 0x17]
-w = ["SUN", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"]
+#w = ["SUN", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"]
+w = ["ВСК", "ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА"]
 # /dev/i2c-1
 bus = smbus.SMBus(1)
 
@@ -59,15 +60,26 @@ draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
 # Draw some shapes.
 # First define some constants to allow easy resizing of shapes.
-padding = 1
-top = padding
-x = padding
-# Load default font.
-# font = ImageFont.load_default()
+padding_v = 16
+padding_h = 1
+top = padding_v
+x = padding_h
+fh = 24
 
-# Alternatively load a TTF font.
-# Some other nice fonts to try: http://www.dafont.com/bitmap.php
-font = ImageFont.truetype('fonts/Minecraftia-Regular.ttf', 36)
+t = ds3231ReadTime()
+t[3] = t[3] & 0x07  # week
+t[4] = t[4] & 0x3F  # day
+t[5] = t[5] & 0x1F  # mouth
+
+weekday = '{:^17}'.format(w[t[3] - 1])
+
+font = ImageFont.truetype('fonts/Minecraftia-Regular.ttf', 14)
+draw.text((5, 0), weekday, font=font, fill=255)
+
+datestr = '{:02x}.{:02x}.20{:02x}'.format(t[4], t[5], t[6])
+draw.text((19, top), datestr, font=font, fill=255)
+
+font = ImageFont.truetype('fonts/Minecraftia-Regular.ttf', 18)
 
 # ds3231SetTime()
 while 1:
@@ -80,8 +92,10 @@ while 1:
     t[5] = t[5] & 0x1F  # mouth
     print("20%x/%02x/%02x %02x:%02x:%02x %s" % (t[6], t[5], t[4], t[2], t[1], t[0], w[t[3] - 1]))
     # Write time to disp
-    timestr = format("%02x:%02x:%02x", t[2], t[1], t[0])
-    draw.text((x, top + 6), timestr, font=font, fill=255)
+    timestr = '{:02x}:{:02x}:{:02x}'.format(t[2], t[1], t[0])
+    draw.rectangle((0, top+ fh, width-x, height - 1), outline=1, fill=0)
+    draw.text((20, top + fh), timestr, font=font, fill=255)
+
     # Display image.
     disp.image(image)
     disp.display()

@@ -5,7 +5,7 @@ import time
 import spidev as SPI
 import SSD1306
 
-import Image
+from PIL import Image
 
 
 # Raspberry Pi pin configuration:
